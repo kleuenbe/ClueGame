@@ -43,9 +43,20 @@ public class ComputerPlayer extends Player {
 		Card tempCard = null;
 		int overFlow = 0; 
 		do{
+			if(overFlow == allCards.size()-3){
+				Card misleadingCard = new Card(getRandomCard(cardType.WEAPON,cards));
+				if(misleadingCard != null){
+					tempCard = misleadingCard;
+					
+					int banana;
+					break;
+					
+				}
+			}
 			tempCard = new Card(getRandomCard(cardType.WEAPON,allCards));
 			overFlow++;
-		}while(!seenCards.contains(tempCard)&&overFlow <= allCards.size()&&!(cards.contains(tempCard)));
+			
+		}while(!seenCards.contains(tempCard)&&!(cards.contains(tempCard)));
 		overFlow = 0;
 		
 		sugg.add(tempCard);
@@ -60,11 +71,22 @@ public class ComputerPlayer extends Player {
 	}
 	public Card getRandomCard(cardType type, ArrayList<Card> fromWhat){
 		Random randomGen = new Random();
+		if(!hasCardType(type,fromWhat)){
+			return null;
+		}
 		while(true){
 			int tempIndex = randomGen.nextInt(fromWhat.size());
 			if(fromWhat.get(tempIndex).getType() == type){
 				return fromWhat.get(tempIndex);
 			}
 		}
+	}
+	public boolean hasCardType(cardType type, ArrayList<Card> what){
+		for(Card c : what){
+			if(c.getType() == type){
+				return true;
+			}
+		}
+		return false;
 	}
 }
