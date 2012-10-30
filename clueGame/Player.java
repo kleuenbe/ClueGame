@@ -10,14 +10,16 @@ import clueGame.Card.cardType;
 
 public abstract class Player {
 	private String name;
-	public String lastVisited;
-	private ArrayList<Card> cards;
+	public RoomCell lastVisited;
+	public char lastVisitedName;
+	protected ArrayList<Card> cards;
 	private Color color;
 	private int startingIndex;
 	public Player(String name, int index, Color color) {
 		this.name = name;
 		this.startingIndex = index;
 		this.color = color;
+		cards = new ArrayList<Card>();
 	}
 	public int getStart() {
 		return startingIndex;
@@ -53,9 +55,9 @@ public abstract class Player {
 			return null;
 		}
 	}
-	public ArrayList<Card> makeSuggestion() {
+	/*public ArrayList<Card> makeSuggestion() {
 		return new ArrayList<Card>();
-	}
+	}*/
 	public void addCard(Card c) {
 		cards.add(c);
 	}

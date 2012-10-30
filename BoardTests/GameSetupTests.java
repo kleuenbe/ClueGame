@@ -26,27 +26,28 @@ public class GameSetupTests {
 		//Make sure there are 6 players
 		Assert.assertEquals(board.getPlayers().size(), 6);
 		//Test a few player names
-		Assert.assertEquals(board.getPlayers().get(0).getName(), "Captain Jirk");
-		Assert.assertEquals(board.getPlayers().get(1).getName(), "Datum");
-		Assert.assertEquals(board.getPlayers().get(5).getName(), "Lieutenant Dwarf");
+		
+		Assert.assertEquals(board.getPlayers().get(3).getName(), "Captain Jirk");
+		Assert.assertEquals(board.getPlayers().get(0).getName(), "Datum");
+		Assert.assertEquals(board.getPlayers().get(1).getName(), "Lieutenant Dwarf");
 		//Test player colors
-		Assert.assertEquals(board.getPlayers().get(0).getColor(), Color.yellow);
-		Assert.assertEquals(board.getPlayers().get(1).getColor(), Color.cyan);
-		Assert.assertEquals(board.getPlayers().get(5).getColor(), Color.red);
+		Assert.assertEquals(board.getPlayers().get(3).getColor(), Color.yellow);
+		Assert.assertEquals(board.getPlayers().get(0).getColor(), Color.cyan);
+		Assert.assertEquals(board.getPlayers().get(1).getColor(), Color.red);
 		//Test player starting locations
-		Assert.assertEquals(board.getPlayers().get(0).getStart(), board.calcIndex(33, 2));
-		Assert.assertEquals(board.getPlayers().get(1).getStart(), board.calcIndex(3, 6));
-		Assert.assertEquals(board.getPlayers().get(5).getStart(), board.calcIndex(22,0));
+		Assert.assertEquals(board.getPlayers().get(3).getStart(), board.calcIndex(33, 2));
+		Assert.assertEquals(board.getPlayers().get(0).getStart(), board.calcIndex(3, 6));
+		Assert.assertEquals(board.getPlayers().get(1).getStart(), board.calcIndex(22,0));
 	}
 	
 	@Test
 	public void testCardLoad() {
-		Assert.assertEquals(board.getCards().size(), 27);	// 6 players, 11 rooms, 10 weapons
+		Assert.assertEquals(board.getAllCards().size(), 21);	// 6 players, 9 rooms, 6 weapons
 		
 		int numWeapons=0;
 		int numPlayers=0;
 		int numRooms=0;
-		for(Card c:board.getCards()) {
+		for(Card c:board.getAllCards()) {
 			switch(c.getType()) {
 			case ROOM: numRooms++; break;
 			case WEAPON: numWeapons++; break;
@@ -57,17 +58,27 @@ public class GameSetupTests {
 		Assert.assertEquals(numPlayers, 6);
 		Assert.assertEquals(numRooms, 9);
 		//Testing that some certain cards were loaded
-		Assert.assertTrue(board.getCards().contains(new Card("Datum", cardType.PERSON)));
-		Assert.assertTrue(board.getCards().contains(new Card("Kirk's Fists", cardType.WEAPON)));
-		Assert.assertTrue(board.getCards().contains(new Card("Bridge", cardType.ROOM)));
+		Assert.assertTrue(board.getAllCards().contains(new Card("Datum", cardType.PERSON)));
+		Assert.assertTrue(board.getAllCards().contains(new Card("Kirk's Fists", cardType.WEAPON)));
+		Assert.assertTrue(board.getAllCards().contains(new Card("Bridge", cardType.ROOM)));
 	}
 	
 	@Test
 	public void testCardDeal() {
-		//Tests that all cards were dealt and all players have 4 cards
+		//Tests that all cards were dealt and all players have 3 cards
 		Assert.assertEquals(board.getSolution().size(), 3);
+		
+		for(Card c:board.getCards()) {
+			System.out.println(c.getName());
+		}
 		for(int i=0; i<6; i++) {
-			Assert.assertEquals(board.getPlayers().get(i).getCards().size(),4);
+			/*System.out.println("oi");
+			for(Card c:board.getPlayers().get(i).getCards()) {
+				System.out.println(c.getName());
+				
+			}
+			System.out.println();*/
+			Assert.assertEquals(board.getPlayers().get(i).getCards().size(),3);
 		}
 		//Test to make sure all cards are dealt
 		Set<Card> dealtCards = new HashSet<Card>();
@@ -76,6 +87,6 @@ public class GameSetupTests {
 				dealtCards.add(c);
 			}
 		}
-		Assert.assertEquals(dealtCards.size()+board.getSolution().size(), board.getCards().size());
+		Assert.assertEquals(dealtCards.size()+board.getSolution().size(), board.getAllCards().size());
 	}
 }

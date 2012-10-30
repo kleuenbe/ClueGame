@@ -19,7 +19,7 @@ import clueGame.RoomCell.DoorDirection;
 
 public class Board {
 	private ArrayList<BoardCell> cells;
-	private Map<Character, String> rooms;
+	public Map<Character, String> rooms;
 	private int numRows;
 	private int numColumns;
 	private Map<Integer, LinkedList<Integer>> adjLST;
@@ -43,13 +43,21 @@ public class Board {
 		players = new ArrayList<Player>();
 		rooms = new HashMap<Character, String>();
 		cells = new ArrayList<BoardCell>();
+		cards = new ArrayList<Card>();
+		seenCards = new HashSet<Card>();
+		solution = new HashSet<Card>();
 		loadConfigFiles(legend,layout,playerLoc,cardFile);
 		adjLST = new HashMap<Integer, LinkedList<Integer>>();
 		this.calcAdjacencies();
+		//allCards=cards;
 		selectSolution();
 		deal();
 	}
 	
+	public ArrayList<Card> getCards() {
+		return cards;
+	}
+
 	public void loadConfigFiles(String legend, String layout, String playerLoc, String cardFile){
 		Scanner in = null;
 		try {
@@ -172,8 +180,14 @@ public class Board {
 				}
 				cType = temp[0].trim();
 				cardName = temp[1].trim();
+				
 				cards.add(new Card(cardName,convertType(cType)));
 			}
+			
+			allCards= new ArrayList<Card>(cards);
+			/*for(Card c:allCards) {
+				System.out.println(c.getType());
+			}*/
 		} catch (BadConfigFormatException e) {
 			System.out.println(e.getMessage());
 		}
@@ -362,39 +376,38 @@ public class Board {
 		return players;
 	}
 
-	public ArrayList<Card> getCards() {
-		return cards;
+	public ArrayList<Card> getAllCards() {
+		return allCards;
 	}
 	public void selectSolution() {
-		allCards=cards;
 		Random randomGen = new Random();
-		Card tempCard = null;		
-		while(tempCard!=null) {
-			int tempIndex=randomGen.nextInt(cards.size());
-			if(cards.get(tempIndex).getType()==cardType.WEAPON) {
-				tempCard = cards.get(tempIndex);
-			}
-		}
-		solution.add(tempCard);
-		cards.remove(tempCard);
-		tempCard=null;
-		while(tempCard!=null) {
+		while(true) {
 			int tempIndex=randomGen.nextInt(cards.size());
 			if(cards.get(tempIndex).getType()==cardType.ROOM) {
-				tempCard = cards.get(tempIndex);
+				solution.add(cards.get(tempIndex));
+				cards.remove(tempIndex);
+				//System.out.println("Ere");
+				break;
 			}
 		}
-		solution.add(tempCard);
-		cards.remove(tempCard);
-		tempCard=null;
-		while(tempCard!=null) {
+		while(true) {
+			int tempIndex=randomGen.nextInt(cards.size());
+			if(cards.get(tempIndex).getType()==cardType.WEAPON) {
+				solution.add(cards.get(tempIndex));
+				cards.remove(tempIndex);
+				//System.out.println("Ere");
+				break;
+			}
+		}
+		while(true) {
 			int tempIndex=randomGen.nextInt(cards.size());
 			if(cards.get(tempIndex).getType()==cardType.PERSON) {
-				tempCard = cards.get(tempIndex);
+				solution.add(cards.get(tempIndex));
+				cards.remove(tempIndex);
+			//	System.out.println("Ere");
+				break;
 			}
 		}
-		solution.add(tempCard);
-		cards.remove(tempCard);
 	}
 	/*public void deal(ArrayList<String> cardlist) {
 		
@@ -402,12 +415,14 @@ public class Board {
 	
 	public void deal() {
 		Random randomGen = new Random();
-		ArrayList<Card> undealtCards = cards;
+		ArrayList<Card> undealtCards = new ArrayList<Card>(cards);
+		int numCardPerPlayer = undealtCards.size()/players.size();
 		for(int k = 0; k < players.size(); k++){
-			for(int i = 0; i < undealtCards.size()/players.size(); i++){
+			//System.out.println(undealtCards.size()/players.size());
+			for(int i = 0; i < numCardPerPlayer; i++){
 				int tempInd = randomGen.nextInt(undealtCards.size());
-				players.get(k).addCard(cards.get(tempInd));
-				undealtCards.remove(undealtCards.get(tempInd));
+				players.get(k).addCard(undealtCards.get(tempInd));
+				undealtCards.remove(tempInd);
 			}
 		}
 	}
@@ -437,7 +452,11 @@ public class Board {
 				return disproved;
 			} else {
 				tempPlayers.remove(tempPlayer);
-				index=(index)%tempPlayers.size();
+				if(tempPlayers.size() == 0){
+					break;
+				}else{	
+					index=(index)%tempPlayers.size();
+				}
 			}
 		}
 		return null;

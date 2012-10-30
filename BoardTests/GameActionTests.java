@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import clueGame.Board;
@@ -13,13 +13,12 @@ import clueGame.BoardCell;
 import clueGame.Card;
 import clueGame.Card.cardType;
 import clueGame.ComputerPlayer;
-import clueGame.HumanPlayer;
 import clueGame.Player;
 
 public class GameActionTests {
 	private static Board board;
-	@BeforeClass
-	public static void setUp(){
+	@Before
+	public void setUp(){
 		board = new Board("Legend","BoardLayout.csv","PlayerFile","CardFile");
 	}
 	
@@ -34,7 +33,7 @@ public class GameActionTests {
 		Set<Card> guess3=new HashSet<Card>();
 		guess3=guess;
 		//Test correct solution set
-		Assert.assertTrue(board.checkAccusation(guess));
+		Assert.assertTrue(board.checkAccusation(board.getSolution()));
 		//Test wrong person
 		guess.remove(new Card("Datum",cardType.PERSON));
 		guess.add(new Card("Lieutenant Dwarf",cardType.PERSON));
@@ -61,15 +60,22 @@ public class GameActionTests {
 		hand0.add(new Card("Photon Torpedo Shard",cardType.WEAPON));
 		hand0.add(new Card("Engine Room",cardType.ROOM));
 		hand0.add(new Card("Phaser",cardType.WEAPON));
-		Player player0 = new ComputerPlayer();
-		player0.setCards(hand0);
-		board.addPlayers(player0);
+		Player player0 = board.getPlayers().get(0);
+		player0.lastVisitedName='B';
+		//player0.setCards(hand0);
+		//board.addPlayers(player0);
 		//Make sure not suggesting cards in hand and make sure suggesting the correct room
-		ArrayList<Card> suggestion=player0.makeSuggestion();
-		Assert.assertFalse(suggestion.contains(new Card("Datum",cardType.PERSON)));
-		Assert.assertFalse(suggestion.contains(new Card("Photon Torpedo Shard",cardType.WEAPON)));
-		Assert.assertFalse(suggestion.contains(new Card("Phaser",cardType.WEAPON)));
-		Assert.assertTrue(suggestion.contains(new Card(player0.lastVisited,cardType.ROOM)));
+		ArrayList<Card> suggestion=((ComputerPlayer)player0).createSuggestion(board.getAllCards(),board.getSeenCards(), board.rooms);
+		for(Card c:suggestion) {
+			System.out.println(c.getName());
+		}
+		for(Card c:player0.getCards()) {
+			System.out.println(c.getName());
+		}
+		Assert.assertFalse(suggestion.contains(player0.getCards().get(0)));
+		Assert.assertFalse(suggestion.contains(board.getPlayers().get(0).getCards().get(1)));
+		Assert.assertFalse(suggestion.contains(board.getPlayers().get(0).getCards().get(2)));
+		Assert.assertTrue(suggestion.contains(new Card(board.rooms.get(player0.lastVisitedName),cardType.ROOM)));
 		//Test that suggestion is made up of a person, weapon, and room
 		Assert.assertEquals(suggestion.size(),3);
 		boolean hasRoom = false;
@@ -95,27 +101,27 @@ public class GameActionTests {
 		hand0.add(new Card("Photon Torpedo Shard",cardType.WEAPON));
 		hand0.add(new Card("Engine Room",cardType.ROOM));
 		hand0.add(new Card("Phaser",cardType.WEAPON));
-		Player player0 = new ComputerPlayer();
+		Player player0 = board.getPlayers().get(0);
 		player0.setCards(hand0);
-		board.addPlayers(player0);
+		//board.addPlayers(player0);
 		
 		ArrayList<Card> hand1=new ArrayList<Card>();
 		hand1.add(new Card("Galley",cardType.ROOM));
 		hand1.add(new Card("Bridge",cardType.ROOM));
 		hand1.add(new Card("Sick Bay",cardType.ROOM));
 		hand1.add(new Card("Ferengi Whip",cardType.WEAPON));
-		Player player1 = new ComputerPlayer();
+		Player player1 = board.getPlayers().get(1);
 		player1.setCards(hand1);
-		board.addPlayers(player1);
+		//board.addPlayers(player1);
 		
 		ArrayList<Card> hand2=new ArrayList<Card>();
 		hand2.add(new Card("Holodeck",cardType.ROOM));
 		hand2.add(new Card("Cargo Bay",cardType.ROOM));
 		hand2.add(new Card("Crew Quarters",cardType.ROOM));
 		hand2.add(new Card("Kirk's Fists",cardType.WEAPON));
-		Player player2 = new HumanPlayer();
+		Player player2 = board.getPlayers().get(2);
 		player2.setCards(hand2);
-		board.addPlayers(player2);
+		//board.addPlayers(player2);
 		
 		//one possible return card
 		ArrayList<Card> suggestion1=new ArrayList<Card>();
@@ -200,16 +206,17 @@ public class GameActionTests {
 	}
 	@Test
 	public void selectLocationTest() {
-		ComputerPlayer player = new ComputerPlayer();
+		System.out.println(board.getPlayers().size());
+		ComputerPlayer player = (ComputerPlayer)board.getPlayers().get(0);
 		// Pick a location with no rooms in target, just three targets
-		board.calcTargets(36,2);
+		board.calcTargets(board.calcIndex(3, 3),2);
 		int loc1 = 0;
 		int loc2 = 0;
 		int loc3 = 0;
 		// Run the test 100 times
 		for (int i=0; i<100; i++) {
 			BoardCell selected = player.pickLocation(board.getTargets());
-			if (selected == board.getCellAt(38))
+			if (selected == board.getCellAt(board.calcIndex(3, 5)))
 				loc1++;
 			else if (selected == board.getCellAt(board.calcIndex(5,3)))
 				loc2++;
@@ -229,7 +236,7 @@ public class GameActionTests {
 			BoardCell selected = player.pickLocation(board.getTargets());
 			Assert.assertEquals(selected, board.getCellAt(45));
 		}
-		player.lastVisited = "EngineRoom";
+		player.lastVisitedName = 'E';
 		loc1 = 0;
 		loc2 = 0;
 		loc3 = 0;

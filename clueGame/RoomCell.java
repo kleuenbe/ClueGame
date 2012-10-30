@@ -5,6 +5,10 @@ public class RoomCell extends BoardCell {
 	private DoorDirection doorDirection;
 	private char roomInitial;
 	
+	public char getRoomInitial() {
+		return roomInitial;
+	}
+
 	public RoomCell(String s, int row, int col) {
 		super(row, col);
 		roomInitial = s.charAt(0);
