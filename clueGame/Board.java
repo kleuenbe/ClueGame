@@ -3,6 +3,7 @@ package clueGame;
 import java.io.*;
 import java.util.*;
 
+import clueGame.Card.cardType;
 import clueGame.RoomCell.DoorDirection;
 
 public class Board {
@@ -13,13 +14,27 @@ public class Board {
 	private Map<Integer, LinkedList<Integer>> adjLST;
 	private boolean[] seen;
 	private Set<BoardCell> targets;
+	public Set<Card> getSolution() {
+		return solution;
+	}
+	private ArrayList<Player> players;
+	private ArrayList<Card> cards;
+	private ArrayList<Card> seenCards;
+	public ArrayList<Card> getSeenCards() {
+		return seenCards;
+	}
+	private Set<Card> solution;
+	private int whosTurn;
 	
 	public Board(String legend, String layout){
+		//cant load players due to test right now
+		players = new ArrayList<Player>();
 		rooms = new HashMap<Character, String>();
 		cells = new ArrayList<BoardCell>();
 		loadConfigFiles(legend,layout);
 		adjLST = new HashMap<Integer, LinkedList<Integer>>();
 		this.calcAdjacencies();
+		//solution=new HashSet<Card>();
 	}
 	
 	public void loadConfigFiles(String legend, String layout){
@@ -253,5 +268,41 @@ public class Board {
 				tempList = new LinkedList<Integer>();
 			}
 		}
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	public ArrayList<Card> getCards() {
+		return cards;
+	}
+	public void selectAnswer() {
+		
+	}
+	public void deal(ArrayList<String> cardlist) {
+		
+	}
+	public void deal() {
+		
+	}
+	public boolean checkAccusation(Set<Card> guess) {
+		/*if(guess.size() != 3){
+		  	return false;
+		}else{
+		  for(Card c : guess){
+			  if(!solution.contains(c)){
+				  return false;
+			  }
+		  }
+		  return true;
+		}*/
+		return false;		 
+	}
+	public Card handleSuggestion(ArrayList<Card> guess,Player suggester) {
+		return new Card("blater", cardType.WEAPON);
+	}
+	public void addPlayers(Player p){
+		players.add(p);
 	}
 }
