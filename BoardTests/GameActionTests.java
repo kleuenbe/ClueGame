@@ -72,9 +72,9 @@ public class GameActionTests {
 		for(Card c:player0.getCards()) {
 			System.out.println(c.getName());
 		}
-		Assert.assertFalse(suggestion.contains(player0.getCards().get(0)));
-		Assert.assertFalse(suggestion.contains(board.getPlayers().get(0).getCards().get(1)));
-		Assert.assertFalse(suggestion.contains(board.getPlayers().get(0).getCards().get(2)));
+		Assert.assertFalse(!suggestion.contains(player0.getCards().get(0)));
+		Assert.assertFalse(!suggestion.contains(board.getPlayers().get(0).getCards().get(1)));
+		Assert.assertFalse(!suggestion.contains(board.getPlayers().get(0).getCards().get(2)));
 		Assert.assertTrue(suggestion.contains(new Card(board.rooms.get(player0.lastVisitedName),cardType.ROOM)));
 		//Test that suggestion is made up of a person, weapon, and room
 		Assert.assertEquals(suggestion.size(),3);
