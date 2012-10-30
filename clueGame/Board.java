@@ -1,7 +1,18 @@
 package clueGame;
 
-import java.io.*;
-import java.util.*;
+import java.awt.Color;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Set;
 
 import clueGame.Card.cardType;
 import clueGame.RoomCell.DoorDirection;
@@ -19,25 +30,27 @@ public class Board {
 	}
 	private ArrayList<Player> players;
 	private ArrayList<Card> cards;
-	private ArrayList<Card> seenCards;
-	public ArrayList<Card> getSeenCards() {
+	private ArrayList<Card> allCards;
+	private Set<Card> seenCards;
+	public Set<Card> getSeenCards() {
 		return seenCards;
 	}
 	private Set<Card> solution;
 	private int whosTurn;
 	
-	public Board(String legend, String layout){
+	public Board(String legend, String layout, String playerLoc, String cardFile){
 		//cant load players due to test right now
 		players = new ArrayList<Player>();
 		rooms = new HashMap<Character, String>();
 		cells = new ArrayList<BoardCell>();
-		loadConfigFiles(legend,layout);
+		loadConfigFiles(legend,layout,playerLoc,cardFile);
 		adjLST = new HashMap<Integer, LinkedList<Integer>>();
 		this.calcAdjacencies();
-		//solution=new HashSet<Card>();
+		selectSolution();
+		deal();
 	}
 	
-	public void loadConfigFiles(String legend, String layout){
+	public void loadConfigFiles(String legend, String layout, String playerLoc, String cardFile){
 		Scanner in = null;
 		try {
 			FileReader reader = new FileReader(legend);
@@ -110,6 +123,81 @@ public class Board {
 		} catch (BadConfigFormatException e) {
 			System.out.println(e.getMessage());
 		}
+		
+		Scanner in3 = null;
+		try { 
+			FileReader reader3 = new FileReader(playerLoc);
+			in3 = new Scanner(reader3);
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found!");
+		}
+		try {
+			String s3;
+			int col = 0;
+			int row = 0;
+			String name;
+			Color color;
+			while(in3.hasNext()) {
+				s3=in3.nextLine();
+				String[] temp = s3.split(",");
+				if(temp.length != 4) {
+					throw new BadConfigFormatException("There are not the correct number of attributes for loading players");
+				}
+				name = temp[0].trim();
+				row = Integer.parseInt(temp[1].trim());
+				col = Integer.parseInt(temp[2].trim());
+				color = convertColor(temp[3].trim());
+				players.add(new ComputerPlayer(name,calcIndex(row,col),color));
+			}
+		} catch (BadConfigFormatException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		Scanner in4 = null;
+		try { 
+			FileReader reader4 = new FileReader(cardFile);
+			in4 = new Scanner(reader4);
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found!");
+		}
+		try {
+			String s4;
+			String cardName;
+			String cType;
+			while(in4.hasNext()) {
+				s4=in4.nextLine();
+				String[] temp = s4.split(",");
+				if(temp.length != 2) {
+					throw new BadConfigFormatException("There are not the correct number of attributes for loading players");
+				}
+				cType = temp[0].trim();
+				cardName = temp[1].trim();
+				cards.add(new Card(cardName,convertType(cType)));
+			}
+		} catch (BadConfigFormatException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public cardType convertType(String cType) {
+		switch(cType) {
+		case "Weapon": return cardType.WEAPON;
+		case "Person": return cardType.PERSON;
+		case "Room": return cardType.ROOM;
+		default: return null;
+		}
+	}
+	
+	public Color convertColor(String strColor) {
+		Color color; 
+		try {     
+			// We can use reflection to convert the string to a color
+			Field field = Class.forName("java.awt.Color").getField(strColor.trim());     
+			color = (Color)field.get(null); } 
+		catch (Exception e) {  
+			color = null; // Not defined } 
+		}
+		return color;
 	}
 	
 	public int calcIndex(int row, int col) {
@@ -277,17 +365,55 @@ public class Board {
 	public ArrayList<Card> getCards() {
 		return cards;
 	}
-	public void selectAnswer() {
-		
+	public void selectSolution() {
+		allCards=cards;
+		Random randomGen = new Random();
+		Card tempCard = null;		
+		while(tempCard!=null) {
+			int tempIndex=randomGen.nextInt(cards.size());
+			if(cards.get(tempIndex).getType()==cardType.WEAPON) {
+				tempCard = cards.get(tempIndex);
+			}
+		}
+		solution.add(tempCard);
+		cards.remove(tempCard);
+		tempCard=null;
+		while(tempCard!=null) {
+			int tempIndex=randomGen.nextInt(cards.size());
+			if(cards.get(tempIndex).getType()==cardType.ROOM) {
+				tempCard = cards.get(tempIndex);
+			}
+		}
+		solution.add(tempCard);
+		cards.remove(tempCard);
+		tempCard=null;
+		while(tempCard!=null) {
+			int tempIndex=randomGen.nextInt(cards.size());
+			if(cards.get(tempIndex).getType()==cardType.PERSON) {
+				tempCard = cards.get(tempIndex);
+			}
+		}
+		solution.add(tempCard);
+		cards.remove(tempCard);
 	}
-	public void deal(ArrayList<String> cardlist) {
+	/*public void deal(ArrayList<String> cardlist) {
 		
-	}
+	}*/
+	
 	public void deal() {
-		
+		Random randomGen = new Random();
+		ArrayList<Card> undealtCards = cards;
+		for(int k = 0; k < players.size(); k++){
+			for(int i = 0; i < undealtCards.size()/players.size(); i++){
+				int tempInd = randomGen.nextInt(undealtCards.size());
+				players.get(k).addCard(cards.get(tempInd));
+				undealtCards.remove(undealtCards.get(tempInd));
+			}
+		}
 	}
+	
 	public boolean checkAccusation(Set<Card> guess) {
-		/*if(guess.size() != 3){
+		if(guess.size() != 3){
 		  	return false;
 		}else{
 		  for(Card c : guess){
@@ -296,13 +422,28 @@ public class Board {
 			  }
 		  }
 		  return true;
-		}*/
-		return false;		 
+		}		 
 	}
 	public Card handleSuggestion(ArrayList<Card> guess,Player suggester) {
-		return new Card("blater", cardType.WEAPON);
+		Random randomGen = new Random();
+		ArrayList<Player> tempPlayers = players;
+		tempPlayers.remove(suggester);
+		int index = randomGen.nextInt(tempPlayers.size());
+		while(!tempPlayers.isEmpty()) {			
+			Player tempPlayer = tempPlayers.get(index);
+			Card disproved = tempPlayer.disproveSuggestion(guess);
+			if(disproved!=null) {
+				seenCards.add(disproved);
+				return disproved;
+			} else {
+				tempPlayers.remove(tempPlayer);
+				index=(index)%tempPlayers.size();
+			}
+		}
+		return null;
 	}
 	public void addPlayers(Player p){
 		players.add(p);
 	}
+	
 }

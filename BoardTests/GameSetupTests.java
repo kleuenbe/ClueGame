@@ -18,7 +18,7 @@ public class GameSetupTests {
 	private static Board board;
 	@BeforeClass
 	public static void setUp(){
-		board = new Board("Legend","BoardLayout.csv");
+		board = new Board("Legend","BoardLayout.csv","PlayerFile","CardFile");
 	}
 
 	@Test
@@ -34,9 +34,9 @@ public class GameSetupTests {
 		Assert.assertEquals(board.getPlayers().get(1).getColor(), Color.cyan);
 		Assert.assertEquals(board.getPlayers().get(5).getColor(), Color.red);
 		//Test player starting locations
-		Assert.assertEquals(board.getPlayers().get(0).getStart(), 365);
-		Assert.assertEquals(board.getPlayers().get(1).getStart(), 36);
-		Assert.assertEquals(board.getPlayers().get(5).getStart(), 209);
+		Assert.assertEquals(board.getPlayers().get(0).getStart(), board.calcIndex(33, 2));
+		Assert.assertEquals(board.getPlayers().get(1).getStart(), board.calcIndex(3, 6));
+		Assert.assertEquals(board.getPlayers().get(5).getStart(), board.calcIndex(22,0));
 	}
 	
 	@Test
@@ -53,9 +53,9 @@ public class GameSetupTests {
 			case PERSON: numPlayers++; break;
 			}
 		}
-		Assert.assertEquals(numWeapons, 10);
+		Assert.assertEquals(numWeapons, 6);
 		Assert.assertEquals(numPlayers, 6);
-		Assert.assertEquals(numRooms, 11);
+		Assert.assertEquals(numRooms, 9);
 		//Testing that some certain cards were loaded
 		Assert.assertTrue(board.getCards().contains(new Card("Datum", cardType.PERSON)));
 		Assert.assertTrue(board.getCards().contains(new Card("Kirk's Fists", cardType.WEAPON)));
