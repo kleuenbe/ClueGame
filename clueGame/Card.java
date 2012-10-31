@@ -26,6 +26,12 @@ public class Card {
 	}
 	@Override
 	public boolean equals(Object o) {
-		return true;
+		if(o instanceof Card) {
+			Card tempCard = (Card)o;
+			if(tempCard.getName().equalsIgnoreCase(this.name)&&tempCard.getType()==this.type) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

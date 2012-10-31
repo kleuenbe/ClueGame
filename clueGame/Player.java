@@ -38,17 +38,13 @@ public abstract class Player {
 	}
 	public Card disproveSuggestion(ArrayList<Card> guess) {
 		ArrayList<Card> returns=new ArrayList<Card>();
-		Set<Card> newGuess = new HashSet<Card>();
-		for(Card c:guess) {
-			newGuess.add(c);
-		}
+		
 		for(Card c:cards) {
-			if(newGuess.contains(c)) {
+			if(guess.indexOf(c) != -1) {
 				returns.add(c);
 			}
 		}
 		Random randomGen = new Random();
-		
 		if(returns.size()!=0) {
 			return returns.get(randomGen.nextInt(returns.size()));
 		} else {

@@ -1,5 +1,6 @@
 package BoardTests;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -66,15 +67,6 @@ public class GameActionTests {
 		//board.addPlayers(player0);
 		//Make sure not suggesting cards in hand and make sure suggesting the correct room
 		ArrayList<Card> suggestion=((ComputerPlayer)player0).createSuggestion(board.getAllCards(),board.getSeenCards(), board.rooms);
-		for(Card c:suggestion) {
-			System.out.println(c.getName());
-		}
-		for(Card c:player0.getCards()) {
-			System.out.println(c.getName());
-		}
-		Assert.assertFalse(!suggestion.contains(player0.getCards().get(0)));
-		Assert.assertFalse(!suggestion.contains(board.getPlayers().get(0).getCards().get(1)));
-		Assert.assertFalse(!suggestion.contains(board.getPlayers().get(0).getCards().get(2)));
 		Assert.assertTrue(suggestion.contains(new Card(board.rooms.get(player0.lastVisitedName),cardType.ROOM)));
 		//Test that suggestion is made up of a person, weapon, and room
 		Assert.assertEquals(suggestion.size(),3);
@@ -94,40 +86,41 @@ public class GameActionTests {
 	}
 	@Test
 	public void disprovingTest() {
-		
+		board.getPlayers().clear();
 		//dealing cards
 		ArrayList<Card> hand0=new ArrayList<Card>();
 		hand0.add(new Card("Datum",cardType.PERSON));
 		hand0.add(new Card("Photon Torpedo Shard",cardType.WEAPON));
 		hand0.add(new Card("Engine Room",cardType.ROOM));
 		hand0.add(new Card("Phaser",cardType.WEAPON));
-		Player player0 = board.getPlayers().get(0);
+		Player player0 = new ComputerPlayer("banana",1,Color.cyan);//board.getPlayers().get(0);
 		player0.setCards(hand0);
-		//board.addPlayers(player0);
+		board.addPlayers(player0);
 		
 		ArrayList<Card> hand1=new ArrayList<Card>();
 		hand1.add(new Card("Galley",cardType.ROOM));
 		hand1.add(new Card("Bridge",cardType.ROOM));
 		hand1.add(new Card("Sick Bay",cardType.ROOM));
 		hand1.add(new Card("Ferengi Whip",cardType.WEAPON));
-		Player player1 = board.getPlayers().get(1);
+		Player player1 = new ComputerPlayer("banana",1,Color.cyan);//board.getPlayers().get(1);
 		player1.setCards(hand1);
-		//board.addPlayers(player1);
+		board.addPlayers(player1);
 		
 		ArrayList<Card> hand2=new ArrayList<Card>();
 		hand2.add(new Card("Holodeck",cardType.ROOM));
 		hand2.add(new Card("Cargo Bay",cardType.ROOM));
 		hand2.add(new Card("Crew Quarters",cardType.ROOM));
 		hand2.add(new Card("Kirk's Fists",cardType.WEAPON));
-		Player player2 = board.getPlayers().get(2);
+		Player player2 = new ComputerPlayer("banana",1,Color.cyan);//board.getPlayers().get(2);
 		player2.setCards(hand2);
-		//board.addPlayers(player2);
-		
+		board.addPlayers(player2);
+		//System.out.println(board.getPlayers().get(0).getCards().get(0).getName());
 		//one possible return card
 		ArrayList<Card> suggestion1=new ArrayList<Card>();
 		suggestion1.add(new Card("Datum",cardType.PERSON));
 		suggestion1.add(new Card("Crew Quarters",cardType.ROOM));
 		suggestion1.add(new Card("Kirk's Fists",cardType.WEAPON));
+		
 		Assert.assertEquals(board.handleSuggestion(suggestion1,player2),new Card("Datum",cardType.PERSON));
 		
 		
@@ -140,7 +133,7 @@ public class GameActionTests {
 	
 		int choice1 = 0;
 		int choice2 = 0;
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 100; i++){
 			Card tempCard = board.handleSuggestion(suggestion0,player2);
 			if(tempCard.equals(new Card("Datum",cardType.PERSON))){
 				choice1++;
@@ -148,9 +141,9 @@ public class GameActionTests {
 				choice2++;
 			}
 		}
-		Assert.assertEquals(choice1 +choice2,10);
-		Assert.assertTrue(choice1 > 2);
-		Assert.assertTrue(choice2 > 2);
+		Assert.assertEquals(choice1 +choice2,100);
+		Assert.assertTrue(choice1 > 20);
+		Assert.assertTrue(choice2 > 20);
 		
 		//return card can be from two possible players
 		ArrayList<Card> suggestion2=new ArrayList<Card>();
@@ -159,7 +152,7 @@ public class GameActionTests {
 		suggestion2.add(new Card("Kirk's Fists",cardType.WEAPON));
 		choice1 = 0;
 		choice2 = 0;
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 100; i++){
 			Card tempCard = board.handleSuggestion(suggestion2,player2);
 			if(tempCard.equals(new Card("Datum",cardType.PERSON))){
 				choice1++;
@@ -167,9 +160,9 @@ public class GameActionTests {
 				choice2++;
 			}
 		}
-		Assert.assertEquals(choice1 +choice2,10);
-		Assert.assertTrue(choice1 > 2);
-		Assert.assertTrue(choice2 > 2);
+		Assert.assertEquals(choice1 +choice2,100);
+		Assert.assertTrue(choice1 > 20);
+		Assert.assertTrue(choice2 > 20);
 		
 		
 		//test that involves human player
@@ -179,7 +172,7 @@ public class GameActionTests {
 		suggestion3.add(new Card("Kirk's Fists",cardType.WEAPON));
 		choice1 = 0;
 		choice2 = 0;
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 100; i++){
 			Card tempCard = board.handleSuggestion(suggestion3,player0);
 			if(tempCard.equals(new Card("Kirk's Fists",cardType.WEAPON))){
 				choice1++;
@@ -187,9 +180,9 @@ public class GameActionTests {
 				choice2++;
 			}
 		}
-		Assert.assertEquals(choice1 +choice2,10);
-		Assert.assertTrue(choice1 > 2);
-		Assert.assertTrue(choice2 > 2);
+		Assert.assertEquals(choice1 +choice2,100);
+		Assert.assertTrue(choice1 > 20);
+		Assert.assertTrue(choice2 > 20);
 		
 		//test that the player whose turn it is does not return a card
 		ArrayList<Card> suggestion4=new ArrayList<Card>();
@@ -199,7 +192,7 @@ public class GameActionTests {
 		choice1 = 0;
 		choice2 = 0;
 		for(int i = 0; i < 10; i++){
-			Card tempCard = board.handleSuggestion(suggestion4,player2);
+			Card tempCard = board.handleSuggestion(suggestion4,player0);
 			Assert.assertEquals(tempCard,null);
 		}
 		
@@ -231,10 +224,11 @@ public class GameActionTests {
 		Assert.assertTrue(loc1 > 10);
 		Assert.assertTrue(loc2 > 10);
 		Assert.assertTrue(loc3 > 10);	
-		board.calcTargets(56, 1);
+		board.calcTargets(board.calcIndex(5, 1), 1);
 		for(int i = 0; i < 100; i++){
+			player.lastVisitedName = 'z';
 			BoardCell selected = player.pickLocation(board.getTargets());
-			Assert.assertEquals(selected, board.getCellAt(45));
+			Assert.assertEquals(selected, board.getCellAt(board.calcIndex(4, 1)));
 		}
 		player.lastVisitedName = 'E';
 		loc1 = 0;
@@ -243,18 +237,19 @@ public class GameActionTests {
 		// Run the test 100 times
 		for (int i=0; i<100; i++) {
 			BoardCell selected = player.pickLocation(board.getTargets());
-			if (selected == board.getCellAt(47))
+			if (selected.equals(board.getCellAt(board.calcIndex(5, 0))))
 				loc1++;
-			else if (selected == board.getCellAt(45))
+			else if (selected.equals(board.getCellAt(board.calcIndex(5, 2))))
 				loc2++;
-			else
-				Assert.fail("Invalid target selected");
+			else if (selected.equals(board.getCellAt(board.calcIndex(4, 1))))
+				loc3++;
 		}
 		// Ensure we have 100 total selections (fail should also ensure)
-		Assert.assertEquals(100, loc1 + loc2);
+		Assert.assertEquals(100, loc1 + loc2 + loc3);
 		// Ensure each target was selected more than once
 		Assert.assertTrue(loc1 > 10);
 		Assert.assertTrue(loc2 > 10);		
+		Assert.assertTrue(loc3>10);
 	}
 
 }

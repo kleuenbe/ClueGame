@@ -59,7 +59,7 @@ public class GameSetupTests {
 		Assert.assertEquals(numRooms, 9);
 		//Testing that some certain cards were loaded
 		Assert.assertTrue(board.getAllCards().contains(new Card("Datum", cardType.PERSON)));
-		Assert.assertTrue(board.getAllCards().contains(new Card("Kirk's Fists", cardType.WEAPON)));
+		Assert.assertTrue(board.getAllCards().contains(new Card("Kirk's Fist", cardType.WEAPON)));
 		Assert.assertTrue(board.getAllCards().contains(new Card("Bridge", cardType.ROOM)));
 	}
 	

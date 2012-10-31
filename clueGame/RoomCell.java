@@ -46,5 +46,16 @@ public class RoomCell extends BoardCell {
 			return true;
 		}
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof RoomCell) {
+			RoomCell tempRoom = (RoomCell)o;
+			if(tempRoom.getInitial()==roomInitial) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

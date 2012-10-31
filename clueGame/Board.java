@@ -441,15 +441,17 @@ public class Board {
 	}
 	public Card handleSuggestion(ArrayList<Card> guess,Player suggester) {
 		Random randomGen = new Random();
-		ArrayList<Player> tempPlayers = players;
+		ArrayList<Player> tempPlayers = new ArrayList<Player>(players);
 		tempPlayers.remove(suggester);
 		int index = randomGen.nextInt(tempPlayers.size());
 		while(!tempPlayers.isEmpty()) {			
 			Player tempPlayer = tempPlayers.get(index);
 			Card disproved = tempPlayer.disproveSuggestion(guess);
+			
 			if(disproved!=null) {
+				//System.out.println(disproved.getName());
 				seenCards.add(disproved);
-				return disproved;
+				return new Card(disproved);
 			} else {
 				tempPlayers.remove(tempPlayer);
 				if(tempPlayers.size() == 0){

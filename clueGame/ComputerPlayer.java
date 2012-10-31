@@ -21,8 +21,9 @@ public class ComputerPlayer extends Player {
 		Random randomGen = new Random();
 		ArrayList<Integer> doorWays = new ArrayList<Integer>();
 		int tempCounter = 0;
+		
 		for(BoardCell b : targets){
-			if(b.isDoorway() && !((RoomCell)b).equals(lastVisited)){
+			if(b.isDoorway() && ((RoomCell)b).getRoomInitial()!=lastVisitedName)/*!((RoomCell)b).equals(lastVisited))*/{
 				doorWays.add(tempCounter);
 			}
 			tempCounter++;
@@ -42,30 +43,44 @@ public class ComputerPlayer extends Player {
 		//get a weapon
 		Card tempCard = null;
 		int overFlow = 0; 
-		do{
-			if(overFlow == allCards.size()-3){
-				Card misleadingCard = new Card(getRandomCard(cardType.WEAPON,cards));
+		while(true){
+			/*if(overFlow == allCards.size()*2){	// Every now and then, make a misleading suggestion to trick other players
+				Card misleadingCard = getRandomCard(cardType.WEAPON,cards);
 				if(misleadingCard != null){
-					tempCard = misleadingCard;
-					
-					int banana;
-					break;
-					
+					tempCard = misleadingCard;					
+					break;					
 				}
+			}*/
+			tempCard = getRandomCard(cardType.WEAPON,allCards);
+			overFlow++;
+			for(Card c:cards) {
+				
 			}
-			tempCard = new Card(getRandomCard(cardType.WEAPON,allCards));
+			//System.out.println(cards.size());
+			if(!seenCards.contains(tempCard)&&!cards.contains(tempCard)){
+				break;
+			}
+		//overFlow = 0;
+		}
+		sugg.add(new Card(tempCard));
+		tempCard = null;
+		while(true){
+			/*if(overFlow == allCards.size()*2){	// Every now and then, make a misleading suggestion to trick other players
+				Card misleadingCard = getRandomCard(cardType.WEAPON,cards);
+				if(misleadingCard != null){
+					tempCard = misleadingCard;					
+					break;					
+				}
+			}*/
+			tempCard = getRandomCard(cardType.PERSON,allCards);
 			overFlow++;
 			
-		}while(!seenCards.contains(tempCard)&&!(cards.contains(tempCard)));
-		overFlow = 0;
-		
-		sugg.add(tempCard);
-		tempCard = null;
-		do{
-			tempCard = new Card(getRandomCard(cardType.PERSON,allCards));
-			overFlow++;
-		}while(!seenCards.contains(tempCard)&&overFlow <= allCards.size()&&!(cards.contains(tempCard)));
-		sugg.add(tempCard);
+			if(!seenCards.contains(tempCard)&&!cards.contains(tempCard)){
+				break;
+			}
+		//overFlow = 0;
+		}
+		sugg.add(new Card(tempCard));
 		return sugg;
 
 	}
