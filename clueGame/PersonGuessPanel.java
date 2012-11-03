@@ -20,5 +20,6 @@ public class PersonGuessPanel extends JPanel{
 		guess.removeAllItems();
 		for (String i: item)
 			guess.addItem(i);
+		guess.addItem("Unsure");
 	}
 }
