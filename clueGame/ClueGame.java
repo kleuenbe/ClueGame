@@ -20,6 +20,7 @@ public class ClueGame extends JFrame {
 		setTitle("ClueGame");
 		setSize(500, 500);
 		addFeatures();
+		setVisible(true);
 	}
 	
 	public void addFeatures(){
@@ -64,6 +65,5 @@ public class ClueGame extends JFrame {
 	
 	public static void main(String[] args) {
 		ClueGame game = new ClueGame();
-		game.setVisible(true);
 	}
 }
