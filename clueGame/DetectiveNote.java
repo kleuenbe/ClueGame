@@ -29,9 +29,4 @@ public class DetectiveNote extends JDialog {
 		add(weapon);
 		add(weaponGuess);
 	}
-	
-	public static void main(String[] args) {
-		DetectiveNote board = new DetectiveNote(new Board("Legend", "BoardLayout.csv", "PlayerFile", "CardFile"));
-		board.setVisible(true);
-	}
 }
