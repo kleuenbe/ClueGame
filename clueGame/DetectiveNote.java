@@ -2,12 +2,13 @@ package clueGame;
 
 import java.awt.GridLayout;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-public class DetectiveNote extends JFrame {
+public class DetectiveNote extends JDialog {
 	
 	public DetectiveNote(Board board){
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 		setTitle("Detective Notes");
 		setSize(800, 500);
 		setLayout(new GridLayout(3,2));
