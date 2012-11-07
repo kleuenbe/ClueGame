@@ -471,7 +471,9 @@ public class Board extends JPanel{
 	}
 	
 	public void paintComponent(Graphics g){
-		
+		super.paintComponents(g);
+		for (BoardCell cell: cells)
+			cell.draw(g, this);
 	}
 	
 }

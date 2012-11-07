@@ -16,15 +16,14 @@ public class ClueGame extends JFrame {
 	
 	public ClueGame(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
 		setTitle("ClueGame");
-		setSize(500, 500);
+		setSize(1120, 370);
 		addFeatures();
 		setVisible(true);
 	}
 	
 	public void addFeatures(){
-		String layoutFile = "BoardLayout.csv";
+		String layoutFile = "Clue Layout.csv";
 		String legendFile = "Legend";
 		String playerFile = "PlayerFile";
 		String cardFile = "CardFile";

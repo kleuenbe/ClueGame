@@ -1,5 +1,8 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 public class RoomCell extends BoardCell {
 	public enum DoorDirection {UP, DOWN, LEFT, RIGHT, NONE}
 	private DoorDirection doorDirection;
@@ -57,5 +60,26 @@ public class RoomCell extends BoardCell {
 		}
 		return false;
 	}
-
+	
+	public void draw(Graphics g, Board board){
+		g.setColor(Color.GRAY);
+		g.fillRect(toPixel(this.getCol()), toPixel(this.getRow()), WIDTH, HEIGHT);
+		if (isDoorway()){
+			g.setColor(Color.BLUE);
+			switch(this.getDoorDirection()){
+			case RIGHT:
+				g.fillRect((int) (toPixel(this.getCol()) + WIDTH*.8), toPixel(this.getRow()), WIDTH/5, HEIGHT);
+				break;
+			case LEFT:
+				g.fillRect(toPixel(this.getCol()), toPixel(this.getRow()), WIDTH/5, HEIGHT);
+				break;
+			case UP:
+				g.fillRect(toPixel(this.getCol()), toPixel(this.getRow()), WIDTH, HEIGHT/5);
+				break;
+			case DOWN:
+				g.fillRect(toPixel(this.getCol()), (int) (toPixel(this.getRow()) + WIDTH*.8), WIDTH, HEIGHT/5);
+				break;
+			}
+		}
+	}
 }
