@@ -67,7 +67,7 @@ public class Board extends JPanel{
 			FileReader reader = new FileReader(legend);
 			in = new Scanner(reader);
 		} catch (FileNotFoundException e) {
-			System.out.println("File not found!");
+			System.out.println("Legend file not found!");
 		}
 		try {
 			String s;
@@ -90,7 +90,7 @@ public class Board extends JPanel{
 			FileReader reader2 = new FileReader(layout);
 			in2 = new Scanner(reader2);
 		} catch (FileNotFoundException e) {
-			System.out.println("File not found!");
+			System.out.println("Layout file not found!");
 		}
 		try {
 			String s2;
@@ -140,7 +140,7 @@ public class Board extends JPanel{
 			FileReader reader3 = new FileReader(playerLoc);
 			in3 = new Scanner(reader3);
 		} catch (FileNotFoundException e) {
-			System.out.println("File not found!");
+			System.out.println("Player file not found!");
 		}
 		try {
 			String s3;
@@ -169,7 +169,7 @@ public class Board extends JPanel{
 			FileReader reader4 = new FileReader(cardFile);
 			in4 = new Scanner(reader4);
 		} catch (FileNotFoundException e) {
-			System.out.println("File not found!");
+			System.out.println("Card file not found!");
 		}
 		try {
 			String s4;
@@ -474,6 +474,9 @@ public class Board extends JPanel{
 		super.paintComponents(g);
 		for (BoardCell cell: cells)
 			cell.draw(g, this);
+		for(Player p:players) {
+			p.draw(g, this);
+		}
 	}
 	
 }

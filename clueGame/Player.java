@@ -3,13 +3,12 @@ package clueGame;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import clueGame.Card.cardType;
-
 public abstract class Player {
+	public static final int WIDTH = 25;
+	public static final int HEIGHT = 25;
 	private String name;
 	public RoomCell lastVisited;
 	public char lastVisitedName;
@@ -59,4 +58,13 @@ public abstract class Player {
 		cards.add(c);
 	}
 	public abstract BoardCell pickLocation(Set<BoardCell> targets);
+	
+	static public int toPixel(int x){
+		return x*WIDTH;
+	}
+	public void draw(Graphics g, Board board){
+		g.setColor(color);
+		g.fillOval(toPixel(this.getStart()%board.getNumColumns()), toPixel(this.getStart()/board.getNumColumns()), WIDTH, HEIGHT);
+		
+	}
 }

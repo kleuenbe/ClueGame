@@ -23,7 +23,7 @@ public class ClueGame extends JFrame {
 	}
 	
 	public void addFeatures(){
-		String layoutFile = "Clue Layout.csv";
+		String layoutFile = "BoardLayout.csv";
 		String legendFile = "Legend";
 		String playerFile = "PlayerFile";
 		String cardFile = "CardFile";
