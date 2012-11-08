@@ -7,9 +7,18 @@ public class RoomCell extends BoardCell {
 	public enum DoorDirection {UP, DOWN, LEFT, RIGHT, NONE}
 	private DoorDirection doorDirection;
 	private char roomInitial;
+	private String title="";
 	
 	public char getRoomInitial() {
 		return roomInitial;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public RoomCell(String s, int row, int col) {
@@ -80,6 +89,10 @@ public class RoomCell extends BoardCell {
 				g.fillRect(toPixel(this.getCol()), (int) (toPixel(this.getRow()) + WIDTH*.8), WIDTH, HEIGHT/5);
 				break;
 			}
+		}
+		if(title!="") {
+			g.setColor(Color.BLACK);
+			g.drawString(title, toPixel(this.getCol()), toPixel(this.getRow()));
 		}
 	}
 }

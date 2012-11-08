@@ -63,43 +63,20 @@ public class Board extends JPanel{
 
 	public void loadConfigFiles(String legend, String layout, String playerLoc, String cardFile){
 		Scanner in = null;
-		try {
-			FileReader reader = new FileReader(legend);
-			in = new Scanner(reader);
-		} catch (FileNotFoundException e) {
-			System.out.println("Legend file not found!");
-		}
-		try {
-			String s;
-			while(in.hasNext()) {
-				char r;
-				s = in.nextLine();
-				String[] temp = s.split(",");
-				if(temp.length > 2) {
-					throw new BadConfigFormatException("Input from room file is too long");
-				}
-				r = temp[0].trim().charAt(0);
-				rooms.put(r, temp[1].trim());
-			}
-		} catch (BadConfigFormatException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		Scanner in2 = null;
 		try { 
-			FileReader reader2 = new FileReader(layout);
-			in2 = new Scanner(reader2);
+			FileReader reader = new FileReader(layout);
+			in = new Scanner(reader);
 		} catch (FileNotFoundException e) {
 			System.out.println("Layout file not found!");
 		}
 		try {
-			String s2;
+			String s1;
 			int col = 0;
 			int row = 0;
 			numRows = 0;
-			if(in2.hasNext()) {
-				s2=in2.nextLine();
-				String[] temp = s2.split(",");
+			if(in.hasNext()) {
+				s1=in.nextLine();
+				String[] temp = s1.split(",");
 				numColumns=temp.length;
 				for(String s:temp) {
 					if(s.equalsIgnoreCase("W")) {
@@ -112,9 +89,9 @@ public class Board extends JPanel{
 				}
 				row++;
 			}
-			while(in2.hasNext()) {
-				s2 = in2.nextLine();
-				String[] temp = s2.split(",");
+			while(in.hasNext()) {
+				s1 = in.nextLine();
+				String[] temp = s1.split(",");
 				if(numColumns != temp.length) {
 					throw new BadConfigFormatException("The number of rows aren't the same in each column");
 				}
@@ -131,6 +108,33 @@ public class Board extends JPanel{
 				row ++;
 			}
 			numRows = row;
+		} catch (BadConfigFormatException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		Scanner in2 = null;
+		try {
+			FileReader reader2 = new FileReader(legend);
+			in2 = new Scanner(reader2);
+		} catch (FileNotFoundException e) {
+			System.out.println("Legend file not found!");
+		}
+		try {
+			String s2;
+			while(in2.hasNext()) {
+				char r;
+				s2 = in2.nextLine();
+				String[] temp = s2.split(",");
+				if(!(temp.length == 2||temp.length ==4)) {	// Closet and walkway have 2 entries because we don't print names for those
+					throw new BadConfigFormatException("Input from room file is too long");
+				}
+				r = temp[0].trim().charAt(0);
+				rooms.put(r, temp[1].trim());
+				//3rd and 4th entries are row and cell of which room cell should print out the name of the room
+				if(temp.length==4) {
+					getRoomCellAt(Integer.parseInt(temp[2].trim()),Integer.parseInt(temp[3].trim())).setTitle(temp[1].trim());
+				}
+			}
 		} catch (BadConfigFormatException e) {
 			System.out.println(e.getMessage());
 		}
@@ -477,6 +481,5 @@ public class Board extends JPanel{
 		for(Player p:players) {
 			p.draw(g, this);
 		}
-	}
-	
+	}	
 }
