@@ -1,14 +1,16 @@
 package clueGame;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class ClueGame extends JFrame {
 	private Board board;
@@ -23,10 +25,10 @@ public class ClueGame extends JFrame {
 	}
 	
 	public void addFeatures(){
-		String layoutFile = "BoardLayout.csv";
-		String legendFile = "Legend";
-		String playerFile = "PlayerFile";
-		String cardFile = "CardFile";
+		String layoutFile = "Clue Layout.csv";
+		String legendFile = "legend.txt";
+		String playerFile = "players.txt";
+		String cardFile = "cards.txt";
 		board = new Board(legendFile, layoutFile, playerFile, cardFile);
 		note = new DetectiveNote(board);
 		add(board, BorderLayout.CENTER);

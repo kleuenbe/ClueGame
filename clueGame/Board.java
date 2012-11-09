@@ -183,7 +183,7 @@ public class Board extends JPanel{
 				s4=in4.nextLine();
 				String[] temp = s4.split(",");
 				if(temp.length != 2) {
-					throw new BadConfigFormatException("There are not the correct number of attributes for loading players");
+					throw new BadConfigFormatException("There are not the correct number of attributes for loading cards");
 				}
 				cType = temp[0].trim();
 				cardName = temp[1].trim();
