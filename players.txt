@@ -1,0 +1,6 @@
+Mr. Green, 19, 4, GREEN
+Mrs. White, 12, 0, WHITE
+Colonel Mustard, 19, 16, ORANGE
+Miss Scarlet, 10, 19, RED
+Professor Plum, 6, 19, MAGENTA
+Mrs. Peacock, 0, 13, BLUE
