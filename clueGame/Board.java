@@ -32,6 +32,7 @@ public class Board extends JPanel{
 		return solution;
 	}
 	private ArrayList<Player> players;
+	private HumanPlayer human;
 	private ArrayList<Card> cards;
 	private ArrayList<Card> allCards;
 	private Set<Card> seenCards;
@@ -162,7 +163,10 @@ public class Board extends JPanel{
 				row = Integer.parseInt(temp[1].trim());
 				col = Integer.parseInt(temp[2].trim());
 				color = convertColor(temp[3].trim());
-				players.add(new ComputerPlayer(name,calcIndex(row,col),color));
+				if (human != null)
+					players.add(new ComputerPlayer(name,calcIndex(row,col),color));
+				else 
+					human = new HumanPlayer(name,calcIndex(row,col),color);
 			}
 		} catch (BadConfigFormatException e) {
 			System.out.println(e.getMessage());
@@ -481,5 +485,6 @@ public class Board extends JPanel{
 		for(Player p:players) {
 			p.draw(g, this);
 		}
+		human.draw(g, this);
 	}	
 }
