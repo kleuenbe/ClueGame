@@ -33,6 +33,9 @@ public class Board extends JPanel{
 	}
 	private ArrayList<Player> players;
 	private HumanPlayer human;
+	public HumanPlayer getHuman() {
+		return human;
+	}
 	private ArrayList<Card> cards;
 	private ArrayList<Card> allCards;
 	private Set<Card> seenCards;
@@ -436,6 +439,8 @@ public class Board extends JPanel{
 				undealtCards.remove(tempInd);
 			}
 		}
+		for (Card i: undealtCards)
+			human.addCard(i);
 	}
 	
 	public boolean checkAccusation(Set<Card> guess) {

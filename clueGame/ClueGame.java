@@ -19,7 +19,7 @@ public class ClueGame extends JFrame {
 	public ClueGame(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("ClueGame");
-		setSize(600, 600);
+		setSize(655, 710);
 		addFeatures();
 		setVisible(true);
 	}
@@ -32,6 +32,8 @@ public class ClueGame extends JFrame {
 		board = new Board(legendFile, layoutFile, playerFile, cardFile);
 		note = new DetectiveNote(board);
 		add(board, BorderLayout.CENTER);
+		add(new PlayerDisplayPanel(board.getHuman().getCards()), BorderLayout.EAST);
+		add(new GameControlPanel(board), BorderLayout.SOUTH);
 		
 		//	File menu
 		JMenuBar menuBar = new JMenuBar();
