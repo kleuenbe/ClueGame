@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
@@ -17,6 +18,7 @@ public class ClueGame extends JFrame {
 	private DetectiveNote note;
 	
 	public ClueGame(){
+		JOptionPane.showMessageDialog(null, "You are Mr. Green, press Next Player to begin.", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("ClueGame");
 		setSize(655, 710);
