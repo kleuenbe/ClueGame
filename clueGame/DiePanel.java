@@ -27,4 +27,12 @@ public class DiePanel extends JPanel{
 		Random generator = new Random();
 		return (generator.nextInt(6)+1);	//0 is inclusive, 6 is exclusive, so add 1 to get #1-6
 	}
+
+	public int getNumber() {
+		return Integer.parseInt(display.getText());
+	}
+
+	public void setDisplay() {
+		display.setText(((Integer) rollDie()).toString());
+	}
 }

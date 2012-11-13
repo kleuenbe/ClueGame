@@ -13,7 +13,7 @@ public class ButtonPanel extends JPanel{
 	private JButton makeAccusation;
 	private WhoseTurnPanel whosTurn;
 	private int player;	// -1 for human, otherwise index of players ArrayList for computer players
-	public ButtonPanel(Board board){
+	public ButtonPanel(Board board,GameInfoPanel gip){
 		next = new JButton("Next Player");
 		makeAccusation = new JButton("Make an Accusation");
 		setLayout(new GridLayout(1,3));
@@ -22,28 +22,38 @@ public class ButtonPanel extends JPanel{
 		add(whosTurn);
 		add(next);
 		add(makeAccusation);
-		ButtonListener listener = new ButtonListener(board);
-		next.addActionListener(listener);		
+		ButtonListener listener = new ButtonListener(board,gip);
+		next.addActionListener(listener);
+		makeAccusation.addActionListener(listener);
 	}
 	
 	class ButtonListener implements ActionListener{
 		private Board board;
-		public ButtonListener(Board board) {
+		private GameInfoPanel gip;
+		public ButtonListener(Board board,GameInfoPanel gip) {
 			super();
 			this.board=board;
+			this.gip=gip;
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource()==next) {
 				player++;
 				if(player<board.getPlayers().size()) {
-					whosTurn.setDisplay(board.getPlayers().get(player).getName());
+					ComputerPlayer p = (ComputerPlayer)board.getPlayers().get(player);
+					whosTurn.setDisplay(p.getName());
+					gip.getDp().setDisplay();
+					board.calcTargets(p.getStart(),gip.getDp().getNumber());
+					p.pickLocation(board.getTargets());
+					// Note: at this point we must move the players location and add a method somewhere to redraw the player token
+					board.repaint();
 				} else {
 					player=-1;
 					whosTurn.setDisplay(board.getHuman().getName());
+					gip.getDp().setDisplay();
 				}
 			} else {
-				
+				// Make accusation
 			}
 		}			
 	}
