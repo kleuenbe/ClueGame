@@ -2,6 +2,7 @@ package clueGame;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -9,12 +10,14 @@ import java.util.Set;
 import clueGame.Card.cardType;
 
 public class ComputerPlayer extends Player {
+	private boolean accuse;
+	private Set<Card> accuseSet;
 	public ComputerPlayer(String name, int index, Color color) {
 		super(name,index,color);
+		accuse=false;
+		accuseSet = new HashSet<Card>();
 	}
-	/*public BoardCell pickLocation(Set<BoardCell> target) {
-		return new WalkwayCell(8,10);
-	}*/
+	
 	@Override
 	public BoardCell pickLocation(Set<BoardCell> t){
 		BoardCell[] targets = t.toArray(new BoardCell[0]);
@@ -23,7 +26,7 @@ public class ComputerPlayer extends Player {
 		int tempCounter = 0;
 		
 		for(BoardCell b : targets){
-			if(b.isDoorway() && ((RoomCell)b).getRoomInitial()!=lastVisitedName)/*!((RoomCell)b).equals(lastVisited))*/{
+			if(b.isDoorway() && ((RoomCell)b).getRoomInitial()!=lastVisitedName){
 				doorWays.add(tempCounter);
 			}
 			tempCounter++;
@@ -34,7 +37,7 @@ public class ComputerPlayer extends Player {
 			RoomCell tempBoardCell = (RoomCell)targets[doorWays.get(randomGen.nextInt(doorWays.size()))];
 			lastVisitedName=tempBoardCell.getRoomInitial();
 			lastVisited = tempBoardCell;
-			return targets[doorWays.get(randomGen.nextInt(doorWays.size()))];//targets[doorWays.get(randomGen.nextInt(doorWays.size()))];
+			return targets[doorWays.get(randomGen.nextInt(doorWays.size()))];
 		}
 	}
 	public ArrayList<Card> createSuggestion(ArrayList<Card> allCards, Set<Card> seenCards, Map<Character,String> rooms){
@@ -103,5 +106,30 @@ public class ComputerPlayer extends Player {
 			}
 		}
 		return false;
+	}
+	public boolean makeMove(Board board, int roll) {
+		boolean win=false;
+		if(accuse) {
+			if(!board.checkAccusation(accuseSet)) {
+				accuse=false;
+			} else {
+				win=true;
+				return win;
+			}
+		} else {
+			board.calcTargets(startingIndex,roll);
+			BoardCell newLoc=pickLocation(board.getTargets());
+			startingIndex=board.calcIndex(newLoc.getRow(), newLoc.getCol());
+			board.repaint();
+			if(newLoc instanceof RoomCell) {
+				ArrayList<Card> suggestion=createSuggestion(board.getAllCards(),board.getSeenCards(),board.getRooms());
+				Card disprove=board.handleSuggestion(suggestion, this);
+				if(disprove==null) {
+					accuse=true;
+					accuseSet.addAll(suggestion);
+				}
+			}
+		}
+		return win;
 	}
 }

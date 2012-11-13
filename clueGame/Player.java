@@ -14,7 +14,7 @@ public abstract class Player {
 	public char lastVisitedName;
 	protected ArrayList<Card> cards;
 	private Color color;
-	private int startingIndex;
+	protected int startingIndex;
 	public Player(String name, int index, Color color) {
 		this.name = name;
 		this.startingIndex = index;

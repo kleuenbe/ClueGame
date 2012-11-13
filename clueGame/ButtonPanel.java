@@ -43,10 +43,8 @@ public class ButtonPanel extends JPanel{
 					ComputerPlayer p = (ComputerPlayer)board.getPlayers().get(player);
 					whosTurn.setDisplay(p.getName());
 					gip.getDp().setDisplay();
-					board.calcTargets(p.getStart(),gip.getDp().getNumber());
-					p.pickLocation(board.getTargets());
-					// Note: at this point we must move the players location and add a method somewhere to redraw the player token
-					board.repaint();
+					p.makeMove(board, gip.getDp().getNumber());
+					
 				} else {
 					player=-1;
 					whosTurn.setDisplay(board.getHuman().getName());
