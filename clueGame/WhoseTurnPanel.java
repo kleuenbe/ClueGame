@@ -1,10 +1,10 @@
 package clueGame;
 
+import java.awt.Dimension;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
 
 public class WhoseTurnPanel extends JPanel{
 	private JTextField display;
@@ -15,5 +15,8 @@ public class WhoseTurnPanel extends JPanel{
 		display = new JTextField(player.getName());
 		display.setEditable(false);
 		add(display);
+	}
+	public void setDisplay(String display) {
+		this.display.setText(display);
 	}
 }
