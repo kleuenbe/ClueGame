@@ -12,14 +12,11 @@ import javax.swing.border.TitledBorder;
 public class GuessPanel extends JPanel{
 	private JTextField display;
 	private JLabel label;
-	public GuessPanel(ArrayList<Card> cards){
+	public GuessPanel(){
 		setLayout(new GridLayout(2,1));
 		label = new JLabel("Guess");
 		add(label);
-		String allCards = "";
-		/*for (Card i : cards)
-			allCards = allCards + i.getName() + " ";*/
-		display = new JTextField(allCards);
+		display = new JTextField(21);
 		display.setEditable(false);
 		add(display);
 		setBorder(new TitledBorder (new EtchedBorder(), "Guess"));

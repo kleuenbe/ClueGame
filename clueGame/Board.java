@@ -447,10 +447,12 @@ public class Board extends JPanel{
 		if(guess.size() != 3){
 		  	return false;
 		}else{
-		  for(Card c : guess){
+			for(Card c : guess){
 			  if(!solution.contains(c)){
+				  System.out.println("ere "+c.getName());
 				  return false;
 			  }
+			  
 		  }
 		  return true;
 		}		 
@@ -458,6 +460,7 @@ public class Board extends JPanel{
 	public Card handleSuggestion(ArrayList<Card> guess,Player suggester) {
 		Random randomGen = new Random();
 		ArrayList<Player> tempPlayers = new ArrayList<Player>(players);
+		tempPlayers.add(human);
 		tempPlayers.remove(suggester);
 		int index = randomGen.nextInt(tempPlayers.size());
 		while(!tempPlayers.isEmpty()) {			

@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import clueGame.Card.cardType;
 
 public class ComputerPlayer extends Player {
@@ -107,14 +109,16 @@ public class ComputerPlayer extends Player {
 		}
 		return false;
 	}
-	public boolean makeMove(Board board, GameInfoPanel gip) {
-		boolean win=false;
+	public void makeMove(Board board, GameInfoPanel gip) {
 		if(accuse) {
 			if(!board.checkAccusation(accuseSet)) {
 				accuse=false;
+				System.out.println(this.getAccused(board.getSolution()));
+				JOptionPane.showMessageDialog(null, "The Computer made an incorrect accusation of "+ this.getAccused(accuseSet), "Accusation", JOptionPane.INFORMATION_MESSAGE);
+				accuseSet.removeAll(accuseSet);
 			} else {
-				win=true;
-				return win;
+				JOptionPane.showMessageDialog(null, "Computer wins!"+'\n'+"The Computer made an correct accusation of "+ this.getAccused(accuseSet), "Accusation", JOptionPane.INFORMATION_MESSAGE);
+				System.exit(0);
 			}
 		} else {
 			board.calcTargets(startingIndex,gip.getDp().getNumber());
@@ -127,14 +131,13 @@ public class ComputerPlayer extends Player {
 				if(disprove==null) {
 					accuse=true;
 					accuseSet.addAll(suggestion);
-					gip.getGrp().setDisplay("No cards shown");
+					gip.getGrp().setDisplay("No new clue");
 				} else {
 					gip.getGrp().setDisplay(disprove.getName());
 				}
 				gip.getGp().setDisplay(this.getSuggested(suggestion));				
 			}
 		}
-		return win;
 	}
 
 	public String getSuggested(ArrayList<Card> suggested) {
@@ -143,5 +146,12 @@ public class ComputerPlayer extends Player {
 			suggest = suggest + c.getName() + " ";
 		}
 		return suggest;
+	}
+	public String getAccused(Set<Card> accused) {
+		String accuse="";
+		for(Card c:accused) {
+			accuse = accuse +c.getName() + " ";
+		}
+		return accuse;
 	}
 }

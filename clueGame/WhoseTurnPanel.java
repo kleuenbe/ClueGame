@@ -12,7 +12,8 @@ public class WhoseTurnPanel extends JPanel{
 	public WhoseTurnPanel(Player player){
 		label = new JLabel("Whose turn? ");
 		add(label);
-		display = new JTextField(player.getName());
+		display = new JTextField(9);
+		display.setText(player.getName());
 		display.setEditable(false);
 		add(display);
 	}
