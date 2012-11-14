@@ -24,6 +24,9 @@ public abstract class Player {
 	public int getStart() {
 		return startingIndex;
 	}
+	public void setStart(int start) {
+		startingIndex=start;
+	}
 	public Color getColor() {
 		return color;
 	}

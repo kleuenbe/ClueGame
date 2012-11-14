@@ -128,6 +128,18 @@ public class ComputerPlayer extends Player {
 			if(newLoc instanceof RoomCell) {
 				ArrayList<Card> suggestion=createSuggestion(board.getAllCards(),board.getSeenCards(),board.getRooms());
 				Card disprove=board.handleSuggestion(suggestion, this);				
+				for(Card c:suggestion) {
+					if(c.getType()==cardType.PERSON) {
+						ArrayList<Player> players = new ArrayList<Player>(board.getPlayers());
+						players.add(board.getHuman());
+						for(Player p:players) {
+							if(p.getName().equalsIgnoreCase(c.getName())) {
+								p.setStart(this.startingIndex);
+								board.repaint();
+							}
+						}
+					}
+				}
 				if(disprove==null) {
 					accuse=true;
 					accuseSet.addAll(suggestion);
