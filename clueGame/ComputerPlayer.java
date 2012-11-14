@@ -113,7 +113,6 @@ public class ComputerPlayer extends Player {
 		if(accuse) {
 			if(!board.checkAccusation(accuseSet)) {
 				accuse=false;
-				System.out.println(this.getAccused(board.getSolution()));
 				JOptionPane.showMessageDialog(null, "The Computer made an incorrect accusation of "+ this.getAccused(accuseSet), "Accusation", JOptionPane.INFORMATION_MESSAGE);
 				accuseSet.removeAll(accuseSet);
 			} else {

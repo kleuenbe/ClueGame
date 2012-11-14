@@ -444,12 +444,15 @@ public class Board extends JPanel{
 	}
 	
 	public boolean checkAccusation(Set<Card> guess) {
-		if(guess.size() != 3){
+		ArrayList<Card> guessList = new ArrayList<Card>();
+		guessList.addAll(guess);
+		ArrayList<Card> solutionList = new ArrayList<Card>();
+		solutionList.addAll(solution);
+		if(guessList.size() != 3){
 		  	return false;
 		}else{
-			for(Card c : guess){
-			  if(!solution.contains(c)){
-				  System.out.println("ere "+c.getName());
+			for(Card c : guessList){
+			  if(!solutionList.contains(c)){
 				  return false;
 			  }
 			  
