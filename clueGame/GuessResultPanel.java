@@ -20,4 +20,7 @@ public class GuessResultPanel extends JPanel{
 		add(display);
 		setBorder(new TitledBorder (new EtchedBorder(), "Guess Result"));
 	}
+	public void setDisplay(String display) {
+		this.display.setText(display);
+	}
 }

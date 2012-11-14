@@ -17,11 +17,14 @@ public class GuessPanel extends JPanel{
 		label = new JLabel("Guess");
 		add(label);
 		String allCards = "";
-		for (Card i : cards)
-			allCards = allCards + i.getName() + " ";
+		/*for (Card i : cards)
+			allCards = allCards + i.getName() + " ";*/
 		display = new JTextField(allCards);
 		display.setEditable(false);
 		add(display);
 		setBorder(new TitledBorder (new EtchedBorder(), "Guess"));
+	}
+	public void setDisplay(String display) {
+		this.display.setText(display);
 	}
 }

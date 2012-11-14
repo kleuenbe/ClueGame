@@ -13,10 +13,16 @@ public class GameInfoPanel extends JPanel{
 	public GameInfoPanel(Board board){
 		dp=new DiePanel();
 		gp=new GuessPanel(board.getHuman().getCards());
-		grp=new GuessResultPanel(new Card("Default Card", Card.cardType.PERSON));
+		grp=new GuessResultPanel(new Card("", Card.cardType.PERSON));
 		add(dp, BorderLayout.WEST);
 		add(gp, BorderLayout.CENTER);
 		add(grp, BorderLayout.EAST);
+	}
+	public GuessPanel getGp() {
+		return gp;
+	}
+	public GuessResultPanel getGrp() {
+		return grp;
 	}
 	public DiePanel getDp() {
 		return dp;

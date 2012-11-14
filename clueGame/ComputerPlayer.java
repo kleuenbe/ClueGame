@@ -107,7 +107,7 @@ public class ComputerPlayer extends Player {
 		}
 		return false;
 	}
-	public boolean makeMove(Board board, int roll) {
+	public boolean makeMove(Board board, GameInfoPanel gip) {
 		boolean win=false;
 		if(accuse) {
 			if(!board.checkAccusation(accuseSet)) {
@@ -117,19 +117,31 @@ public class ComputerPlayer extends Player {
 				return win;
 			}
 		} else {
-			board.calcTargets(startingIndex,roll);
+			board.calcTargets(startingIndex,gip.getDp().getNumber());
 			BoardCell newLoc=pickLocation(board.getTargets());
 			startingIndex=board.calcIndex(newLoc.getRow(), newLoc.getCol());
 			board.repaint();
 			if(newLoc instanceof RoomCell) {
 				ArrayList<Card> suggestion=createSuggestion(board.getAllCards(),board.getSeenCards(),board.getRooms());
-				Card disprove=board.handleSuggestion(suggestion, this);
+				Card disprove=board.handleSuggestion(suggestion, this);				
 				if(disprove==null) {
 					accuse=true;
 					accuseSet.addAll(suggestion);
+					gip.getGrp().setDisplay("No cards shown");
+				} else {
+					gip.getGrp().setDisplay(disprove.getName());
 				}
+				gip.getGp().setDisplay(this.getSuggested(suggestion));				
 			}
 		}
 		return win;
+	}
+
+	public String getSuggested(ArrayList<Card> suggested) {
+		String suggest="";
+		for(Card c:suggested) {
+			suggest = suggest + c.getName() + " ";
+		}
+		return suggest;
 	}
 }

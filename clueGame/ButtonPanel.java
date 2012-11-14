@@ -1,12 +1,12 @@
 package clueGame;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class ButtonPanel extends JPanel{
 	private JButton next;
@@ -43,15 +43,14 @@ public class ButtonPanel extends JPanel{
 					ComputerPlayer p = (ComputerPlayer)board.getPlayers().get(player);
 					whosTurn.setDisplay(p.getName());
 					gip.getDp().setDisplay();
-					p.makeMove(board, gip.getDp().getNumber());
-					
+					p.makeMove(board, gip);					
 				} else {
 					player=-1;
 					whosTurn.setDisplay(board.getHuman().getName());
 					gip.getDp().setDisplay();
 				}
 			} else {
-				// Make accusation
+				// Human make accusation
 			}
 		}			
 	}
