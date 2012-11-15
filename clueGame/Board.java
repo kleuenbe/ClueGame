@@ -528,8 +528,10 @@ public class Board extends JPanel{
 			if(!turnEnd) {
 				if(targets.contains(clicked)) {
 					player.setStart(index);
-					System.out.println(y+" "+x);
 					repaint();
+					if(clicked instanceof RoomCell) {
+						// Human make suggestion
+					}
 					turnEnd=true;
 				} else {
 					JOptionPane.showMessageDialog(null, "Please select a valid location highlighted in cyan.", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);

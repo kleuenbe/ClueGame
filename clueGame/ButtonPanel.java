@@ -51,14 +51,15 @@ public class ButtonPanel extends JPanel{
 					whosTurn.setDisplay(board.getHuman().getName());
 					gip.getDp().setDisplay();
 					board.highlightTargets(gip.getDp().getNumber());
-					System.out.println(board.getTargets().size());
 					boolean turnEnd = false;
 					MListen mlistener = board.new MListen(board.getHuman(),turnEnd);
 					board.addMouseListener(mlistener);
 					
 				}
 			} else {
-				// Human make accusation
+				if(player==-1) {	//Player turn (clicking next will set player=-1)
+					//Human make accusation
+				}
 			}
 		}			
 	}
