@@ -70,9 +70,14 @@ public class RoomCell extends BoardCell {
 		return false;
 	}
 	
-	public void draw(Graphics g, Board board){
-		g.setColor(Color.GRAY);
-		g.fillRect(toPixel(this.getCol()), toPixel(this.getRow()), WIDTH, HEIGHT);
+	public void draw(Graphics g, Board board, boolean target){
+		if(target) {
+			g.setColor(Color.CYAN);
+			g.fillRect(toPixel(this.getCol()), toPixel(this.getRow()), WIDTH, HEIGHT);
+		} else {
+			g.setColor(Color.GRAY);
+			g.fillRect(toPixel(this.getCol()), toPixel(this.getRow()), WIDTH, HEIGHT);
+		}
 		if (isDoorway()){
 			g.setColor(Color.BLUE);
 			switch(this.getDoorDirection()){

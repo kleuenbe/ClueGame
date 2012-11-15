@@ -2,6 +2,8 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Field;
@@ -492,10 +494,16 @@ public class Board extends JPanel{
 	public void paintComponent(Graphics g){
 		super.paintComponents(g);
 		for (BoardCell cell: cells)
-			cell.draw(g, this);
+			cell.draw(g, this,false);
 		for(Player p:players) {
 			p.draw(g, this);
 		}
 		human.draw(g, this);
+	}
+	public void highlightTargets(int roll) {
+		calcTargets(human.getStart(),roll);
+		for(BoardCell cell:targets) {
+			cell.draw(getGraphics(), this, true);
+		}
 	}	
 }

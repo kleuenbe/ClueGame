@@ -25,9 +25,14 @@ public class WalkwayCell extends BoardCell {
 		return false;
 	}
 	
-	public void draw(Graphics g, Board board){
-		g.setColor(Color.YELLOW);
-		g.fillRect(toPixel(this.getCol()), toPixel(this.getRow()), WIDTH, HEIGHT);
+	public void draw(Graphics g, Board board, boolean target){
+		if(!target) {
+			g.setColor(Color.YELLOW);
+			g.fillRect(toPixel(this.getCol()), toPixel(this.getRow()), WIDTH, HEIGHT);
+		} else {
+			g.setColor(Color.CYAN);
+			g.fillRect(toPixel(this.getCol()), toPixel(this.getRow()), WIDTH, HEIGHT);
+		}
 		g.setColor(Color.BLACK);
 		g.drawRect(toPixel(this.getCol()), toPixel(this.getRow()), WIDTH, HEIGHT);
 	}

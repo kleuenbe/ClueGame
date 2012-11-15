@@ -36,7 +36,7 @@ public abstract class BoardCell {
 		return false;
 	}
 	
-	abstract public void draw(Graphics g, Board board);
+	abstract public void draw(Graphics g, Board board, boolean target);
 	
 	static public int toPixel(int x){
 		return x*WIDTH;
