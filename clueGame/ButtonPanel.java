@@ -3,13 +3,11 @@ package clueGame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import clueGame.Board.MListen;
 
 
 public class ButtonPanel extends JPanel{
@@ -53,8 +51,9 @@ public class ButtonPanel extends JPanel{
 					whosTurn.setDisplay(board.getHuman().getName());
 					gip.getDp().setDisplay();
 					board.highlightTargets(gip.getDp().getNumber());
+					System.out.println(board.getTargets().size());
 					boolean turnEnd = false;
-					MListen mlistener = new MListen(board,board.getHuman());
+					MListen mlistener = board.new MListen(board.getHuman(),turnEnd);
 					board.addMouseListener(mlistener);
 					
 				}
@@ -63,43 +62,5 @@ public class ButtonPanel extends JPanel{
 			}
 		}			
 	}
-	public class MListen implements MouseListener {
-		private Board board;
-		private Player player;
-		public static final int WIDTH = 25;
-		public static final int HEIGHT = 25;
-		public MListen(Board board, Player player) {
-			super();
-			this.board=board;
-			this.player=player;
-		}
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			int x=e.getX()/WIDTH;
-			int y=e.getY()/HEIGHT;
-			int index=board.calcIndex(y, x);
-			BoardCell clicked = board.getCellAt(index);
-			ArrayList<BoardCell> targets=new ArrayList<BoardCell>();
-			targets.addAll(board.getTargets());
-			if(targets.contains(clicked)) {
-				player.setStart(index);
-				board.repaint();
-			} else {
-				JOptionPane.showMessageDialog(null, "Please select a valid location highlighted in cyan.", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
-			}
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent arg0) {}
-
-		@Override
-		public void mouseExited(MouseEvent arg0) {}
-
-		@Override
-		public void mousePressed(MouseEvent arg0) {}
-
-		@Override
-		public void mouseReleased(MouseEvent arg0) {}
-		
-	}
+	
 }

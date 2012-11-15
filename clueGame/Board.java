@@ -17,6 +17,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import clueGame.Card.cardType;
@@ -506,4 +507,47 @@ public class Board extends JPanel{
 			cell.draw(getGraphics(), this, true);
 		}
 	}	
+	public class MListen implements MouseListener {
+		private Player player;
+		private boolean turnEnd;
+		public static final int WIDTH = 25;
+		public static final int HEIGHT = 25;
+		public MListen(Player player,Boolean turnEnd) {
+			super();
+			this.player=player;
+			this.turnEnd=turnEnd;
+		}
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			int x=e.getX()/WIDTH;
+			int y=e.getY()/HEIGHT;
+			int index=calcIndex(y, x);
+			BoardCell clicked = getCellAt(index);
+			ArrayList<BoardCell> targets=new ArrayList<BoardCell>();
+			targets.addAll(getTargets());
+			if(!turnEnd) {
+				if(targets.contains(clicked)) {
+					player.setStart(index);
+					System.out.println(y+" "+x);
+					repaint();
+					turnEnd=true;
+				} else {
+					JOptionPane.showMessageDialog(null, "Please select a valid location highlighted in cyan.", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {}
+		
+	}
 }
